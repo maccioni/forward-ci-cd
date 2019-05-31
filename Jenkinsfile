@@ -10,8 +10,8 @@ pipeline {
         }
         stage('Stage 2') {
             steps {
-              echo "Creating file1.txt..."
-              sh "echo 'File 2 conent' >> ./file2.txt"
+              echo "Check Ansible version..."
+              sh "ansible --version"
             }
         }
         stage('Stage 3') {
