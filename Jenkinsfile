@@ -2,14 +2,21 @@ pipeline {
     agent any
 
     stages {
-        stage('Stage 1') {
+        stage('Stage 1: check enviroment') {
             steps {
-                echo "Creating file1.txt..."
-                sh "echo 'File 1 content' >> ./file1.txt"
+              echo "Check running user"
+              sh "whoami"
+              sh "who am i"
+              echo "Check local directory"
+              sh "ls -l"
+              echo "Check enviroment variables"
+              sh "env"
             }
         }
         stage('Stage 2') {
             steps {
+              echo "Check running user"
+              sh "whoami"
               echo "Check Ansible version..."
               sh "ansible --version"
             }
