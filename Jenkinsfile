@@ -2,37 +2,21 @@ pipeline {
     agent any
 
     stages {
-        stage('Deploy code to PE') {
+        stage('Stage 1') {
             steps {
-                sh '/opt/puppetlabs/bin/puppet-code deploy production --wait'
+                echo "Creating file1.txt..."
+                sh "echo "File 1 content" >> ./file1.txt"
             }
         }
-        stage('Checkpoint configuration') {
+        stage('Stage 2') {
             steps {
-                sh "/opt/puppetlabs/bin/puppet-task run yang_ietf::checkpoint target='cat9k-puppet' --nodes 'cisco-pe-demo.localhost'"
+              echo "Creating file1.txt..."
+              sh "echo "File 2 conent" >> ./file2.txt"
             }
         }
-        stage('Execute Puppet Device') {
+        stage('Stage 3') {
             steps {
-                sh "/opt/puppetlabs/bin/puppet-task run puppet_device target='cat9k-puppet' --nodes 'cisco-pe-demo.localhost'"
-            }
-        }
-        stage('Validate Changes') {
-            steps {
-                echo 'Testing....'
-                script {
-                    try {
-                        sh "/opt/puppetlabs/bin/puppet-task run yang_ietf::forbidden target='cat9k-puppet' forbidden='apic' --nodes 'cisco-pe-demo.localhost'"
-                    } catch (error) {
-                        sh "/opt/puppetlabs/bin/puppet-task run yang_ietf::rollback target='cat9k-puppet' --nodes 'cisco-pe-demo.localhost'"
-                        error("Changes failed testing.  Rolled back.")
-                    }
-                }
-            }
-        }
-        stage('Copy run-start') {
-            steps {
-                sh "/opt/puppetlabs/bin/puppet-task run yang_ietf::saveconfig target='cat9k-puppet' --nodes 'cisco-pe-demo.localhost'"
+              echo "All done in this Pipeline! exiting..."
             }
         }
     }
