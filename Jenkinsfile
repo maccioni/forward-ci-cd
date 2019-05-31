@@ -13,17 +13,34 @@ pipeline {
               sh "env"
             }
         }
-        stage('Stage 2') {
+        stage('Stage 2: Verify before pushing changes to Production') {
             steps {
-              echo "Check running user"
-              sh "whoami"
-              echo "Check Ansible version..."
-              sh "ansible --version"
+              echo "Running Ansible playbook with Before snapshot"
+              script {
+                    try {
+                      sh "ansible-playbook fwd-ansible/test_esx_traffic.yml --extra-vars=@fwd-ansible/deployments/test-snapshots-before.yml --extra-vars=expected_check_status=FAIL"
+                    } catch (error) {
+                    error("Ansible Playbook failed!!!")
+                    }
+                }
             }
         }
-        stage('Stage 3') {
+        stage('Stage 3: Pushing changes to production' ) {
             steps {
-              echo "All done in this Pipeline! exiting..."
+              echo "Sleeping for a while..."
+              sh "sleep 10"
+            }
+        }
+        stage('Stage 4: Verify after the changes have been pushed to Production') {
+            steps {
+              echo "Running Ansible playbook with After snapshot"
+              script {
+                    try {
+                      sh "ansible-playbook fwd-ansible/test_esx_traffic.yml --extra-vars=@fwd-ansible/deployments/test-snapshots-after.yml --extra-vars=expected_check_status=PASS"
+                    } catch (error) {
+                    error("Ansible Playbook failed!!!")
+                    }
+                }
             }
         }
     }
