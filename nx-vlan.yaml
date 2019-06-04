@@ -1,0 +1,17 @@
+---
+- name: Configure vlans on Cisco NX-OS deccices
+  hosts: 10.128.1.135
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: ensure vlan 50 exists with the name web and is shutdown
+      nxos_vlan:
+        vlan_id: 50
+        name: WEB
+        admin_state: down
+
+    - name: ensure vlan 60 is not on the device
+      nxos_vlan:
+        vlan_id: 60
+        state: absent
