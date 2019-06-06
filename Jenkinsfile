@@ -28,7 +28,7 @@ pipeline {
         stage('Stage 3: Pushing changes to production' ) {
             steps {
               echo "Sleeping for a while..."
-              sh "sleep 120"
+              sh "sleep 10"
             }
         }
         stage('Stage 4: Verify after the changes have been pushed to Production') {
