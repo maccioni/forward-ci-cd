@@ -6,11 +6,8 @@ pipeline {
             steps {
               echo "Check enviroment "
               sh "whoami"
-              sh "who am i"
               sh "ls -l"
               sh "env"
-              echo "Pull code from GitHub"
-              sh 'git pull origin master'
             }
         }
         stage('2: Verify before pushing changes to Production') {
