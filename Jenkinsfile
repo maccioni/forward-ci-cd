@@ -5,9 +5,8 @@ pipeline {
         stage('1: Update code from GitHub') {
             steps {
               echo "Check enviroment "
-              sh "whoami"
-              sh "ls -l"
               sh "env"
+              sh "ls -l"
               echo "Pull code from GitHub"
               sh 'git pull origin master'
             }
