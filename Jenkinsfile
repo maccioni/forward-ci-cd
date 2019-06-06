@@ -2,18 +2,18 @@ pipeline {
     agent any
 
     stages {
-        stage('Stage 1: check enviroment') {
+        stage('1: Update code from GitHub') {
             steps {
-              echo "Check running user"
+              echo "Check enviroment "
               sh "whoami"
               sh "who am i"
-              echo "Check local directory"
               sh "ls -l"
-              echo "Check enviroment variables"
               sh "env"
+              echo "Pull code from GitHub"
+              sh 'git pull origin master'
             }
         }
-        stage('Stage 2: Verify before pushing changes to Production') {
+        stage('2: Verify before pushing changes to Production') {
             steps {
               echo "Running Ansible playbook with Before snapshot"
               script {
@@ -25,13 +25,13 @@ pipeline {
                 }
             }
         }
-        stage('Stage 3: Pushing changes to production' ) {
+        stage('3: Pushing changes to production' ) {
             steps {
               echo "Sleeping for a while..."
               sh "sleep 10"
             }
         }
-        stage('Stage 4: Verify after the changes have been pushed to Production') {
+        stage('4: Verify after the changes have been pushed to Production') {
             steps {
               echo "Running Ansible playbook with After snapshot"
               script {
